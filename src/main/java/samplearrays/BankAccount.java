@@ -14,10 +14,14 @@ public class BankAccount {
 
     public void deposit(double amount){
         if (amount <= 0) {
-            System.out.println("You cannot diposit a negative ammount.");
+            System.out.println("Deposit must be positive.");
             return;
         }
 
+        if (idx >= transactions.length) {
+            System.out.println("Transaction history is full.");
+            return;
+        }
         currentBalance += amount;
         transactions[idx] = (+amount);
         idx++;
@@ -26,20 +30,25 @@ public class BankAccount {
     }
 
     public void withdraw(double amount){
-        if (amount > currentBalance) {
-            System.out.println("This passes your balance. Unseccessful withdraw.");
+        if (amount > currentBalance || amount <= 0) {
+            System.out.println("Unseccessful withdraw.");
             return;
         }
 
+        if (idx >= transactions.length) {
+            System.out.println("Transaction history is full.");
+            return;
+        }
         currentBalance -= amount;
         transactions[idx] = (-amount);
+        idx++;
     }
 
     public void displayTransactions(){
         System.out.println("Your list of transaction is the following: ");
 
-        for(double t : transactions) {
-            System.out.println(t);
+        for(int i=0; i<idx; i++) {
+            System.out.println(transactions[i]);
         }
     }
 

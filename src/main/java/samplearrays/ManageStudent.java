@@ -4,6 +4,9 @@ public class ManageStudent {
 
     // 2) Find the Oldest Student
     public static Student findOldest(Student[] students) {
+        if (students.length == 0) 
+            return null;
+
         Student oldest = students[0];
 
         for (Student s : students) {
@@ -23,23 +26,21 @@ public class ManageStudent {
         return count;
     }
 
-    // 4) Average Grade (returns NaN if no students or grades)
+    // 4) Average Grade (returns NaN if there are no students)
     public static double averageGrade(Student[] students) {
         double sum = 0;
         for(Student s : students) {
-            if(s.getGrade() != Double.NaN) sum += s.getGrade();
+            sum += s.getGrade();
         }
 
         return sum / students.length;
 
     }
 
-    // 5) Search by Name (case-sensitive; change to equalsIgnoreCase if desired)
+    // 5) Search by Name (case-insensitive)
     public static Student findStudentByName(Student[] students, String name) {
-        name = name.toLowerCase();
-
         for(Student s : students) {
-            if(s.getName().toLowerCase() == name) {
+            if(name != null && name.equalsIgnoreCase(s.getName())) {
                 return s;
             }
         }
@@ -49,11 +50,13 @@ public class ManageStudent {
 
     // 6) Sort Students by Grade (descending)
     public static void sortByGradeDesc(Student[] students) {
-        for(int i=1; i<students.length; i++) {
-            if (students[i-1].getGrade() < students[i].getGrade()) {
-                Student temp = students[i-1];
-                students[i-1] = students[i];
-                students[i] = temp;
+        for(int i=0; i<students.length; i++) {
+            for (int j = i+1; j<students.length; j++) {
+                if (students[i].getGrade() < students[j].getGrade()) {
+                    Student temp = students[i];
+                    students[i] = students[j];
+                    students[j] = temp;
+                }
             }
         }
     }
@@ -84,15 +87,14 @@ public class ManageStudent {
         int idx = 0;
 
         for(Student s : students) {
-            for (String name : names) {
-                if (name == s.getName()) {
-                    System.out.println("Douplicate found.");
+            for (int i = 0; i < idx; i++) {
+                if (names[i] != null && names[i].equals(s.getName())) {
+                    System.out.println("Duplicate found.");
                     return true;
-                } else {
-                    names[idx] = s.getName();
-                    idx++;
                 }
             }
+            names[idx] = s.getName();
+            idx++;
         }
 
         return false;
@@ -155,14 +157,18 @@ public class ManageStudent {
         // 8) Update grade by id
         boolean updated = updateGrade(arr, 4, 19);
         System.out.println("\nUpdated id=4? " + updated);
-        System.out.println(findStudentByName(arr, "Dina"));
+        for (Student s : arr) {
+            if (s.getId() == 4) System.out.println(s);
+        }
 
         // 9) Duplicate names
         hasDuplicateNames(arr);
 
         // 10) Append new student
         Student newStudent = new Student(6, "Yahia", 19, 13);
-        appendStudent(arr, newStudent);
+        arr = appendStudent(arr, newStudent);
+        System.out.println("\n== After appending ==");
+        for (Student s : arr) System.out.println(s);
     }
 }
 

@@ -29,12 +29,26 @@ public class DogShelter {
 
     // Add count to a given index
     public static void addBreed(int index, int count) {
+        if (!isValidIndex(index)) return;
+        if (count < 0) {
+            System.out.println("Invalid dog count.");
+            return;
+        }
         dogCounts[index] = dogCounts[index] + count;
     }
 
     // Remove a breed by setting its count to 0
     public static void deleteBreed(int index) {
+        if (!isValidIndex(index)) return;
         dogCounts[index] = 0;
+    }
+
+    private static boolean isValidIndex(int index) {
+        if (index < 0 || index >= dogCounts.length) {
+            System.out.println("Invalid breed index.");
+            return false;
+        }
+        return true;
     }
 
     // Display all dog counts
